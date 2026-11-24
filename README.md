@@ -4,7 +4,7 @@
 
 | 文件 | 用途 |
 | --- | --- |
-| [Codex Dream Skin 1.5.21](app/Codex-Dream-Skin-1.5.21-macOS.zip) | 本机使用的原版 macOS 菜单栏 App，支持 Apple Silicon 和 Intel。 |
+| [Codex Dream Skin 1.5.21](app/Codex-Dream-Skin-1.5.21-macOS.zip) | 本机使用的原版 macOS 菜单栏 App，支持 Apple Silicon 和 Intel。 Windowns 参考 https://github.com/Fei-Away/Codex-Dream-Skin |
 | [海景主题](themes/preset-ocean-shallows/) | 主题配置、配色和海床底图。 |
 | [renderer-inject.js](assets/renderer-inject.js) | 与本机引擎相同的定制渲染文件，包含海面和鱼群的绘制代码。 |
 | [dream-skin.css](assets/dream-skin.css) | 与本机引擎相同的样式文件，包含海景图层和窗口失焦时的背景修正。 |
