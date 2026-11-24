@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "preset-ocean-shallows",
+  "name": "Ocean Shallows Live",
+  "image": "background.webp",
+  "appearance": "dark",
+  "art": {
+    "focusX": 0.38,
+    "focusY": 0.42,
+    "safeArea": "left",
+    "taskMode": "full"
+  },
+  "colors": {
+    "background": "#0a283bb3",
+    "panel": "#123847",
+    "panelAlt": "#174558",
+    "accent": "#7fe3d3",
+    "accentAlt": "#b3eee2",
+    "secondary": "#82b5c8",
+    "highlight": "#e6c899",
+    "text": "#f4fbf8",
+    "muted": "#bad5d7",
+    "line": "rgba(174, 224, 225, .24)"
+  }
+}
