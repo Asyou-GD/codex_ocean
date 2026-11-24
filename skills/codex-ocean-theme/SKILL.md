@@ -1,11 +1,17 @@
 ---
 name: codex-ocean-theme
-description: 在 macOS 上预览、定制或迁移 Codex 的 Ocean Shallows Live 动态海景主题。适用于调整水面、自动鱼群、聊天气泡透明度，以及在另一台 Mac 恢复已定稿的主题。
+description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex 的 Ocean Shallows Live 动态海景主题。适用于部署已有海景、调整水面和消息样式，以及在另一台电脑恢复定稿。
 ---
 
 # 定制和迁移 Codex 海景
 
-**先交付可在浏览器打开的 HTML，让用户改到满意，再把定稿应用到 Codex。** 第一次展示预览时就说明，Codex 里的海景只播放动画。水面和鱼群会自动运动，点水、拖鱼和海景快捷键都不可用。鼠标和键盘留给聊天、文字选择和「显示更多」。如果只是把已经定稿的版本搬到新 Mac，直接走换机流程。
+**先交付可在浏览器打开的 HTML，让用户改到满意，再把定稿应用到 Codex。** 第一次展示预览时就说明，Codex 里的海景只播放动画。水面和鱼群会自动运动，点水、拖鱼和海景快捷键都不可用。鼠标和键盘留给聊天、文字选择和「显示更多」。如果只是把已经定稿的版本搬到新电脑，直接走对应系统的换机流程。
+
+## 根据当前电脑选择流程
+
+用户请求安装或迁移已有版本时，先确认当前系统和仓库路径，直接进入对应平台的安装流程。Windows 从上游安装 Windows 引擎，再加载本仓库的共用 JavaScript、Windows 样式和预设；macOS 使用仓库里的 App 和 macOS 样式。
+
+开始安装后，连续完成环境检查、安装、复制、主题选择和验证。结果依据本机执行记录及显示效果。遇到失败时给出具体命令、退出码和错误，并处理可以恢复的问题。
 
 ## 先预览，再定稿
 
@@ -18,13 +24,32 @@ description: 在 macOS 上预览、定制或迁移 Codex 的 Ocean Shallows Live
 | 沙滩位置、海床和礁石 | 更新 `themes/preset-ocean-shallows/background.webp`。换图名时同步修改 `theme.json` 的 `image`。 |
 | 聊天文字、强调色和面板配色 | 编辑同目录 `theme.json` 的 `colors.text`、`colors.accent`、`colors.panel` 等字段。保留主题 ID `preset-ocean-shallows`，海景动画用它识别当前主题。 |
 | 水面节奏、鱼群数量或游姿 | 将预览采用的绘制参数移到 `assets/renderer-inject.js` 的海景代码。例如，`drawSchools` 中的 `perSchool` 控制每群小鱼的数量，`swimCadences` 控制大型生物的动作节奏。 |
-| 自己发出的消息有多透明 | 在 `assets/dream-skin.css` 的海景样式里调 `--ocean-user-bubble-alpha`。取 `0` 时气泡底色完全透明，可调到 `0.15` 保留一层淡底。只改变底色的 alpha，保持文字、链接和按钮清晰。 |
+| 自己发出的消息有多透明 | 在目标平台的样式文件中调 `--ocean-user-bubble-alpha`。macOS 使用 `assets/dream-skin.css`，Windows 使用 `assets/windows/dream-skin.css`。取 `0` 时气泡底色完全透明，可调到 `0.15` 保留一层淡底。保留消息文字、链接、按钮和现有描边。 |
 
 两个渲染文件由各主题共用。新增海景样式要限定在 `body[data-ocean-scene]` 下，动画沿用现有的主题 ID 判断和切走时的清理逻辑。使用本地预览和公开示例文案复核效果即可。
 
+## 应用到 Windows 或迁移到新 Windows 电脑
+
+完整步骤见工作副本中的 `docs/windows.md`。[Windows 安装文档](https://github.com/Asyou-GD/codex_ocean/blob/main/docs/windows.md)
+
+1. 用 `Get-AppxPackage -Name OpenAI.Codex` 确认当前用户已注册官方 Store 包。Windows 10 / 11 x64 使用上游 `CodexDreamSkin-Setup-v1.5.21.exe` 安装引擎，安装器附带 Node.js。已有匹配引擎时复用当前安装。
+2. 关闭 Codex 和 Dream Skin 托盘，备份待替换的文件，然后按下表同步。目录中的 `theme.json` 与 `background.webp` 保持直接相邻。
+
+   | 仓库来源 | Windows 目标 |
+   | --- | --- |
+   | `assets/renderer-inject.js` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\renderer-inject.js` |
+   | `assets/windows/dream-skin.css` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\dream-skin.css` |
+   | `themes/preset-ocean-shallows/` | `%LOCALAPPDATA%\CodexDreamSkin\themes\preset-ocean-shallows\` |
+
+3. 从开始菜单打开 Codex Dream Skin 和托盘，在「已保存主题」里选择 **Ocean Shallows Live**。按启动器提示处理客户端重启。
+4. 核对 `%LOCALAPPDATA%\CodexDreamSkin\active-theme\theme.json` 的 ID 为 `preset-ocean-shallows`，运行安装目录 `engine\scripts\verify-dream-skin.ps1`，并检查水面、鱼群、消息描边、文字选择、输入框及长消息展开。
+5. 启动失败时记录 Store 版本、退出码及 `injector-error.log` 中的相关错误。根据实际失败判断兼容性。当前仓库已核对 Windows 资源与路径，Windows 实机结果由这次安装验证得出。
+
+回退时关闭 Codex 和托盘，恢复备份的引擎文件和预设，重新打开并选择原主题。日常更换背景直接使用托盘的「已保存主题」。
+
 ## 应用到当前 Mac 或迁移到新 Mac
 
-1. 在目标 Mac 上取得用户选定的仓库版本。首次安装时，解压 `app/Codex-Dream-Skin-1.5.21-macOS.zip`，把 **Codex Dream Skin.app** 移到「应用程序」并打开，再在菜单栏选择「安装 / 升级引擎…」。仓库配套的是 1.5.21。[私有仓库](https://github.com/Asyou-GD/codex_ocean)
+1. 在目标 Mac 上取得用户选定的仓库版本。首次安装时，解压 `app/Codex-Dream-Skin-1.5.21-macOS.zip`，把 **Codex Dream Skin.app** 移到「应用程序」并打开，再在菜单栏选择「安装 / 升级引擎…」。仓库配套的是 1.5.21。[项目仓库](https://github.com/Asyou-GD/codex_ocean)
 2. 在 Finder 中按 ⇧⌘G 打开下表中的目标目录。首次安装或迁移时复制全部三项；在同一台 Mac 上继续 DIY 时，只同步这轮定稿改过的项目。替换前将已有同名文件和主题目录备份到目标目录之外，供回退使用。
 
    | 从仓库复制 | 目标位置 |
@@ -36,4 +61,8 @@ description: 在 macOS 上预览、定制或迁移 Codex 的 Ocean Shallows Live
 3. 初次启用或更新了主题目录里的图片、配色后，在 Dream Skin 菜单的「已保存的主题」中选择 **Ocean Shallows Live**。海景已运行时，安装目录中的 JS 和 CSS 保存后会自动刷新；需要手动刷新时，可选「重新应用皮肤」。打开已有聊天，观察水面和鱼群是否运动，检查亮色海面上的文字是否可读，以及长消息能否展开和收起。切到另一 App，确认露出的 Codex 区域仍能看到海景。
 4. 日常更换背景，直接在「已保存的主题」里选择目标主题。要撤销文件层面的定制，先切走海景，再恢复第 2 步备份的资源和原主题目录，并重新选择原主题。若这台 Mac 原先没有海景目录，回退时可将新增目录移到主题库之外。
 
-要在新 Mac 继续用本技能，把仓库的 `skills/codex-ocean-theme/` 整个复制到 `~/.codex/skills/`（如自定义了 `CODEX_HOME`，使用其下的 `skills/`）。在新会话里输入 `$codex-ocean-theme 把每群小鱼减半，先给我看 HTML`，即可从本机这版接着改。
+## 在另一台电脑继续使用本技能
+
+把仓库的 `skills/codex-ocean-theme/` 整个复制到技能目录。macOS 默认是 `~/.codex/skills/`，Windows 默认是 `%USERPROFILE%\.codex\skills\`。自定义了 `CODEX_HOME` 时，使用其下的 `skills` 目录。
+
+在新会话里输入 `$codex-ocean-theme 在这台 Windows 上安装仓库里的海景并验证`，或 `$codex-ocean-theme 把每群小鱼减半，先给我看 HTML`。

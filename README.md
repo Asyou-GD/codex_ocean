@@ -1,16 +1,24 @@
 # Ocean Shallows Live
 
-用于 macOS Codex 聊天窗口的动态浅海背景。选中 **Ocean Shallows Live** 后，海面会流动，鱼群会自动出现。背景不接收鼠标输入，可以照常选中文字和聊天。
+用于 Codex 桌面聊天窗口的动态浅海背景，基于 Codex Dream Skin 1.5.21。选中 **Ocean Shallows Live** 后，海面会流动，鱼群会自动出现，鼠标和键盘仍用于聊天。
+
+macOS 已完成本机运行验证。Windows 提供对应的样式资源和部署流程，安装时需在目标电脑验证实际显示。
 
 ![Codex 窗口中的动态海景](media/codex-ocean-demo.gif)
 
 | 文件 | 用途 |
 | --- | --- |
-| [Codex Dream Skin 1.5.21](app/Codex-Dream-Skin-1.5.21-macOS.zip) | 本机使用的原版 macOS 菜单栏 App，支持 Apple Silicon 和 Intel。 Windowns 参考 https://github.com/Fei-Away/Codex-Dream-Skin |
+| [macOS App](app/Codex-Dream-Skin-1.5.21-macOS.zip) | Codex Dream Skin 1.5.21，支持 Apple Silicon 和 Intel。 |
+| [Windows 安装流程](docs/windows.md) | Windows 10 / 11 x64 的安装、文件位置、启用、验证和回退。 |
 | [海景主题](themes/preset-ocean-shallows/) | 主题配置、配色和海床底图。 |
-| [renderer-inject.js](assets/renderer-inject.js) | 与本机引擎相同的定制渲染文件，包含海面和鱼群的绘制代码。 |
-| [dream-skin.css](assets/dream-skin.css) | 与本机引擎相同的样式文件，包含海景图层和窗口失焦时的背景修正。 |
+| [renderer-inject.js](assets/renderer-inject.js) | macOS 和 Windows 共用的海景渲染文件。 |
+| [macOS 样式](assets/dream-skin.css) | 海景图层、透明消息框和窗口失焦时的背景修正。 |
+| [Windows 样式](assets/windows/dream-skin.css) | 同一海景样式加上 Windows 窗口和输入框适配。 |
 | [海景定制技能](skills/codex-ocean-theme/SKILL.md) | 从单文件 HTML 预览开始调整效果，定稿后同步到聊天窗口，也可用于换机和回退。 |
+
+## 在 Windows 上使用
+
+先按 Windows 文档安装上游 Windows 引擎，再复制本仓库的海景渲染文件、Windows 样式和预设目录，最后从托盘选择 **Ocean Shallows Live**。Windows 的引擎资源位于 `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\`，主题库位于 `%LOCALAPPDATA%\CodexDreamSkin\themes\`。[完整 Windows 步骤](docs/windows.md)
 
 ## 在另一台 Mac 上使用
 
