@@ -18,16 +18,57 @@ macOS 已完成本机运行验证。Windows 提供对应的样式资源和部署
 
 ## 在 Windows 上使用
 
-先按 Windows 文档安装上游 Windows 引擎，再复制本仓库的海景渲染文件、Windows 样式和预设目录，最后从托盘选择 **Ocean Shallows Live**。Windows 的引擎资源位于 `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\`，主题库位于 `%LOCALAPPDATA%\CodexDreamSkin\themes\`。[完整 Windows 步骤](docs/windows.md)
+安装上游 Windows 引擎后，右键任务栏托盘里的 Dream Skin 图标，选择「打开主题文件夹」，将整个 `preset-ocean-shallows` 文件夹放进去。再把配套 JavaScript 和 Windows 样式放进当前引擎的 `assets` 目录，从「已保存主题」选择 **Ocean Shallows Live**。[完整 Windows 步骤](docs/windows.md)
 
 ## 在另一台 Mac 上使用
 
 1. 解压 App，移入「应用程序」并打开。首次使用 Dream Skin 时，在菜单栏选择「安装 / 升级引擎…」，完成 1.5.21 引擎安装。
-2. 在 Finder 中按 ⇧⌘G，前往 `~/.codex/codex-dream-skin-studio/assets/`。先把现有的 `renderer-inject.js` 和 `dream-skin.css` 备份到其他目录，再用仓库 `assets/` 中的同名文件替换。
-3. 前往 `~/Library/Application Support/CodexDreamSkinStudio/themes/`，把仓库中的整个 `preset-ocean-shallows` 文件夹放进去。确认 `theme.json` 和 `background.webp` 都直接位于这个文件夹中。
-4. 打开 Dream Skin 菜单，在「已保存的主题」中选择 **Ocean Shallows Live**。
+2. 点击菜单栏里的 Dream Skin 图标，选择「主题 → 打开主题文件夹」，将仓库中的整个 `preset-ocean-shallows` 文件夹放进去。
+3. 找到当前 Dream Skin 引擎的 `assets` 目录，备份原有的 `renderer-inject.js` 和 `dream-skin.css`，再用仓库 `assets/` 中的同名文件替换。目录定位方法见下方说明。
+4. 回到 Dream Skin 的「主题 → 已保存的主题」，选择 **Ocean Shallows Live**。
 
-App 压缩包保留了 1.5.21 的出厂资源。修复或重装引擎后，如果能看到海床却没有鱼群，请重新核对第 2 步的两个文件。
+App 压缩包保留了 1.5.21 的出厂资源。修复或重装引擎后，如果能看到海床却没有鱼群，请重新核对第 3 步的两个文件。
+
+## 找到软件实际使用的文件夹
+
+主题文件夹以 Dream Skin 的「打开主题文件夹」菜单实际打开的位置为准。更换电脑、用户名或安装位置后，重新从菜单打开即可。
+
+macOS 在菜单栏的「主题」子菜单里打开，Windows 在任务栏托盘菜单里打开。下图使用用户提供的 macOS 实际菜单截图。
+
+![macOS 的 Dream Skin 菜单，依次点击主题和打开主题文件夹](docs/images/open-theme-folder-macos.png)
+
+复制后应能看到这样的结构
+
+```text
+软件打开的主题文件夹/
+  preset-ocean-shallows/
+    theme.json
+    background.webp
+```
+
+需要核对以下内容
+
+- `theme.json` 的 `id` 保持为 `preset-ocean-shallows`，`image` 与实际底图文件名一致。
+- `renderer-inject.js` 和目标平台的 `dream-skin.css` 使用同一仓库版本，放进当前引擎读取的同一个 `assets` 目录。
+- 修改过安装位置时，先根据实际启动入口找到引擎，再替换其中的文件。
+
+<details>
+<summary>引擎定位与 1.5.21 默认目录参考</summary>
+
+Windows 1.5.21 中，从软件打开的主题文件夹返回上一层，进入 `engine → assets`。引擎目录同层应有 `VERSION` 和 `scripts`。使用自行修改的安装时，再根据正在运行的 Dream Skin 脚本位置确认引擎。
+
+安装器创建的快捷方式可能指向 `setup-bootstrap.ps1`，它会继续启动用户数据目录中的引擎。定位资源时沿用软件打开的目录，并核对实际引擎。
+
+macOS 1.5.21 的菜单栏 App 使用用户主目录下的 `.codex/codex-dream-skin-studio` 引擎。可在 Finder 用 ⇧⌘G 打开下表中的默认引擎目录。使用自行修改的 App 时，核对其实际启动脚本的位置。
+
+| 平台 | 默认主题文件夹 | 默认引擎资源目录 |
+| --- | --- | --- |
+| macOS | `~/Library/Application Support/CodexDreamSkinStudio/themes/` | `~/.codex/codex-dream-skin-studio/assets/` |
+| Windows | `%LOCALAPPDATA%\CodexDreamSkin\themes\` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\` |
+
+这些是 1.5.21 的默认路径，供定位和排查时参考。实际复制位置以软件菜单和启动入口为准。
+
+</details>
 
 ## 切换主题时的行为
 

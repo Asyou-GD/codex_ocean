@@ -38,17 +38,41 @@ themes/
 
 ## 3. 备份并复制海景资源
 
-退出 Dream Skin 托盘并正常关闭 Codex。在资源管理器的地址栏输入目标路径，按下表复制文件。替换前，把现有的两个引擎文件及同名海景目录复制到单独的备份文件夹。
+先右键任务栏托盘里的 Dream Skin 图标，选择「打开主题文件夹」。这个菜单打开的实际目录就是本机的主题库，先记下它的位置。
 
-| 仓库中的文件 | Windows 上的目标路径 |
+Windows 1.5.21 中，从这个主题文件夹返回上一层，进入 `engine → assets`，找到引擎正在使用的两份文件。引擎目录同层应有 `VERSION` 和 `scripts`。修改过安装或启动方式时，按下方的引擎核对方法确认实际位置。
+
+找到两个目录后，退出 Dream Skin 托盘并正常关闭 Codex。把原有的两个引擎文件及同名海景目录备份到其他文件夹，再按下表复制。
+
+| 仓库中的文件 | 复制到哪里 |
 | --- | --- |
-| `assets\renderer-inject.js` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\renderer-inject.js` |
-| `assets\windows\dream-skin.css` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\dream-skin.css` |
-| `themes\preset-ocean-shallows\` 整个目录 | `%LOCALAPPDATA%\CodexDreamSkin\themes\preset-ocean-shallows\` |
+| `assets\renderer-inject.js` | 当前引擎的 `assets` 文件夹，替换同名文件 |
+| `assets\windows\dream-skin.css` | 同一个引擎的 `assets` 文件夹，替换 `dream-skin.css` |
+| `themes\preset-ocean-shallows\` 整个目录 | 软件菜单打开的主题文件夹 |
 
 复制后，`theme.json` 和 `background.webp` 直接位于 `preset-ocean-shallows` 内。保留配置中的主题 ID `preset-ocean-shallows`，引擎用它启用海景。
 
-上表使用用户目录中的受管引擎资源。底图与配置作为受信任的已保存预设加载。
+JavaScript 和 Windows 样式使用同一仓库版本，并放在同一个实际运行的引擎中。不同电脑使用各自的软件目录。底图与配置作为受信任的已保存预设加载。[菜单示意与默认目录参考](../README.md#找到软件实际使用的文件夹)
+
+<details>
+<summary>需要 AI 核对实际引擎时</summary>
+
+让 Dream Skin 托盘运行，在 PowerShell 查看相关进程的脚本位置
+
+```powershell
+Get-CimInstance Win32_Process |
+    Where-Object {
+        $_.Name -in @('powershell.exe', 'pwsh.exe', 'node.exe') -and
+        $_.CommandLine -match '\\scripts\\(tray-dream-skin\.ps1|start-dream-skin\.ps1|injector\.mjs)'
+    } |
+    Select-Object ProcessId, CommandLine
+```
+
+脚本所在的 `scripts` 文件夹上一级是引擎目录。核对它与准备替换的 `assets` 位于同一引擎中，再退出托盘进行替换。
+
+安装器快捷方式可能先启动 `setup-bootstrap.ps1`，再转到受管引擎。核对时使用实际运行的 Dream Skin 脚本路径。
+
+</details>
 
 ## 4. 启用主题
 
@@ -65,8 +89,9 @@ themes/
 以下命令确认选中的主题 ID，并调用已安装引擎自带的验证流程
 
 ```powershell
-$state = Join-Path $env:LOCALAPPDATA 'CodexDreamSkin'
-$engine = Join-Path $state 'engine'
+$themes = Read-Host '粘贴软件菜单实际打开的主题文件夹路径'
+$state = Split-Path -Parent $themes
+$engine = Read-Host '粘贴已经核对的引擎目录，其中应包含 VERSION 和 scripts'
 
 Get-Content -LiteralPath (Join-Path $state 'active-theme\theme.json') -Raw |
     ConvertFrom-Json |
@@ -89,7 +114,7 @@ powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File "$engine\scripts\v
 | 消息框、标题栏或输入框样式异常 | 核对实际复制的是 `assets\windows\dream-skin.css`，并重新应用主题。 |
 | 启动器报告找不到端点或 `access-denied` | 记录 Codex Store 版本和完整错误，按上游的启动兼容说明排查。部分官方客户端版本会限制该启动方式，实际错误决定是否能继续。[上游 Windows 兼容说明](https://github.com/Fei-Away/Codex-Dream-Skin/blob/v1.5.21/windows/README.md) |
 
-日志位于 `%LOCALAPPDATA%\CodexDreamSkin\`，包括 `injector.log`、`injector-error.log` 和 `verify.log`。反馈时只提供相关错误片段。
+日志位于软件主题文件夹的上一级，包括 `injector.log`、`injector-error.log` 和 `verify.log`。使用自定义引擎时，从其实际启动参数确认日志位置。反馈时只提供相关错误片段。
 
 ## 切换与回退
 

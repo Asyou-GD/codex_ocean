@@ -11,6 +11,8 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 
 用户请求安装或迁移已有版本时，先确认当前系统和仓库路径，直接进入对应平台的安装流程。Windows 从上游安装 Windows 引擎，再加载本仓库的共用 JavaScript、Windows 样式和预设；macOS 使用仓库里的 App 和 macOS 样式。
 
+先从软件的「打开主题文件夹」菜单确定本机实际主题库，再定位当前运行的引擎。默认目录仅用于查找参考。复制后核对主题 ID、图片文件名，以及两份引擎资源的版本和所在目录。[菜单截图与引擎定位](https://github.com/Asyou-GD/codex_ocean#找到软件实际使用的文件夹)
+
 开始安装后，连续完成环境检查、安装、复制、主题选择和验证。结果依据本机执行记录及显示效果。遇到失败时给出具体命令、退出码和错误，并处理可以恢复的问题。
 
 ## 先预览，再定稿
@@ -33,16 +35,16 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 完整步骤见工作副本中的 `docs/windows.md`。[Windows 安装文档](https://github.com/Asyou-GD/codex_ocean/blob/main/docs/windows.md)
 
 1. 用 `Get-AppxPackage -Name OpenAI.Codex` 确认当前用户已注册官方 Store 包。Windows 10 / 11 x64 使用上游 `CodexDreamSkin-Setup-v1.5.21.exe` 安装引擎，安装器附带 Node.js。已有匹配引擎时复用当前安装。
-2. 关闭 Codex 和 Dream Skin 托盘，备份待替换的文件，然后按下表同步。目录中的 `theme.json` 与 `background.webp` 保持直接相邻。
+2. 右键 Dream Skin 托盘图标，选择「打开主题文件夹」，记下软件实际打开的目录。Windows 1.5.21 的引擎位于其上一级的 `engine` 中；自定义启动时按 `docs/windows.md` 核对实际脚本位置。找到目录后关闭 Codex 和托盘，备份待替换的文件，再按下表同步。
 
    | 仓库来源 | Windows 目标 |
    | --- | --- |
-   | `assets/renderer-inject.js` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\renderer-inject.js` |
-   | `assets/windows/dream-skin.css` | `%LOCALAPPDATA%\CodexDreamSkin\engine\assets\dream-skin.css` |
-   | `themes/preset-ocean-shallows/` | `%LOCALAPPDATA%\CodexDreamSkin\themes\preset-ocean-shallows\` |
+   | `assets/renderer-inject.js` | 当前引擎的 `assets/renderer-inject.js` |
+   | `assets/windows/dream-skin.css` | 同一引擎的 `assets/dream-skin.css` |
+   | `themes/preset-ocean-shallows/` | 软件菜单打开的主题文件夹内 |
 
 3. 从开始菜单打开 Codex Dream Skin 和托盘，在「已保存主题」里选择 **Ocean Shallows Live**。按启动器提示处理客户端重启。
-4. 核对 `%LOCALAPPDATA%\CodexDreamSkin\active-theme\theme.json` 的 ID 为 `preset-ocean-shallows`，运行安装目录 `engine\scripts\verify-dream-skin.ps1`，并检查水面、鱼群、消息描边、文字选择、输入框及长消息展开。
+4. 在主题文件夹上一级的 `active-theme/theme.json` 中核对 ID 为 `preset-ocean-shallows`，运行已核对引擎内的 `scripts/verify-dream-skin.ps1`，并检查水面、鱼群、消息描边、文字选择、输入框及长消息展开。
 5. 启动失败时记录 Store 版本、退出码及 `injector-error.log` 中的相关错误。根据实际失败判断兼容性。当前仓库已核对 Windows 资源与路径，Windows 实机结果由这次安装验证得出。
 
 回退时关闭 Codex 和托盘，恢复备份的引擎文件和预设，重新打开并选择原主题。日常更换背景直接使用托盘的「已保存主题」。
@@ -50,13 +52,13 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 ## 应用到当前 Mac 或迁移到新 Mac
 
 1. 在目标 Mac 上取得用户选定的仓库版本。首次安装时，解压 `app/Codex-Dream-Skin-1.5.21-macOS.zip`，把 **Codex Dream Skin.app** 移到「应用程序」并打开，再在菜单栏选择「安装 / 升级引擎…」。仓库配套的是 1.5.21。[项目仓库](https://github.com/Asyou-GD/codex_ocean)
-2. 在 Finder 中按 ⇧⌘G 打开下表中的目标目录。首次安装或迁移时复制全部三项；在同一台 Mac 上继续 DIY 时，只同步这轮定稿改过的项目。替换前将已有同名文件和主题目录备份到目标目录之外，供回退使用。
+2. 点击菜单栏 Dream Skin 图标，通过「主题 → 打开主题文件夹」找到本机主题库，并按 README 的引擎定位说明找到当前引擎。首次安装或迁移时复制全部三项；在同一台 Mac 上继续 DIY 时，只同步这轮定稿改过的项目。替换前将已有同名文件和主题目录备份到目标目录之外，供回退使用。
 
    | 从仓库复制 | 目标位置 |
    | --- | --- |
-   | `themes/preset-ocean-shallows/` 整个目录 | `~/Library/Application Support/CodexDreamSkinStudio/themes/preset-ocean-shallows/`，其中直接包含 `theme.json`、`background.webp` |
-   | `assets/renderer-inject.js` | `~/.codex/codex-dream-skin-studio/assets/renderer-inject.js` |
-   | `assets/dream-skin.css` | `~/.codex/codex-dream-skin-studio/assets/dream-skin.css` |
+   | `themes/preset-ocean-shallows/` 整个目录 | 软件菜单打开的主题文件夹内，预设中直接包含 `theme.json`、`background.webp` |
+   | `assets/renderer-inject.js` | 当前引擎的 `assets/renderer-inject.js` |
+   | `assets/dream-skin.css` | 同一引擎的 `assets/dream-skin.css` |
 
 3. 初次启用或更新了主题目录里的图片、配色后，在 Dream Skin 菜单的「已保存的主题」中选择 **Ocean Shallows Live**。海景已运行时，安装目录中的 JS 和 CSS 保存后会自动刷新；需要手动刷新时，可选「重新应用皮肤」。打开已有聊天，观察水面和鱼群是否运动，检查亮色海面上的文字是否可读，以及长消息能否展开和收起。切到另一 App，确认露出的 Codex 区域仍能看到海景。
 4. 日常更换背景，直接在「已保存的主题」里选择目标主题。要撤销文件层面的定制，先切走海景，再恢复第 2 步备份的资源和原主题目录，并重新选择原主题。若这台 Mac 原先没有海景目录，回退时可将新增目录移到主题库之外。
