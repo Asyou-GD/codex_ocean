@@ -8,6 +8,7 @@
 | [海景主题](themes/preset-ocean-shallows/) | 主题配置、配色和海床底图。 |
 | [renderer-inject.js](assets/renderer-inject.js) | 与本机引擎相同的定制渲染文件，包含海面和鱼群的绘制代码。 |
 | [dream-skin.css](assets/dream-skin.css) | 与本机引擎相同的样式文件，包含海景图层和窗口失焦时的背景修正。 |
+| [海景定制技能](skills/codex-ocean-theme/SKILL.md) | 从单文件 HTML 预览开始调整效果，定稿后同步到聊天窗口，也可用于换机和回退。 |
 
 ## 在另一台 Mac 上使用
 

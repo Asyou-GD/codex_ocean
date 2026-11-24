@@ -1804,9 +1804,20 @@ body[data-ocean-scene] > :is([data-ocean-water], [data-ocean-layer]) {
 }
 body[data-ocean-scene] > [data-ocean-water][hidden] { display: none !important; }
 html[data-dream-skin="active"] body[data-ocean-scene] {
+  --ocean-user-bubble-alpha: 0;
   --ds-immersive-edge: rgba(7, 38, 49, .24);
   --ds-immersive-mid: rgba(7, 38, 49, .16);
   --ds-immersive-far: rgba(7, 38, 49, .12);
+}
+
+/* The native bubble and its child controls share this background token.
+   Keep other participants' colors and the native print layout. */
+@media screen {
+  html[data-dream-skin="active"] body[data-ocean-scene]
+    [data-user-message-bubble]:not([class*="otherUserMessage-"]) {
+    --color-background-user-message: rgb(var(--ds-panel-rgb) / var(--ocean-user-bubble-alpha));
+    text-shadow: 0 1px 2px rgb(5 27 37 / .7);
+  }
 }
 
 /* macOS paints a full-window surface behind an inactive Codex window. The
