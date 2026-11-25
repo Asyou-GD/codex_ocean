@@ -26,6 +26,7 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 | 沙滩位置、海床和礁石 | 更新 `themes/preset-ocean-shallows/background.webp`。换图名时同步修改 `theme.json` 的 `image`。 |
 | 聊天文字、强调色和面板配色 | 编辑同目录 `theme.json` 的 `colors.text`、`colors.accent`、`colors.panel` 等字段。保留主题 ID `preset-ocean-shallows`，海景动画用它识别当前主题。 |
 | 水面节奏、鱼群数量或游姿 | 将预览采用的绘制参数移到 `assets/renderer-inject.js` 的海景代码。例如，`drawSchools` 中的 `perSchool` 控制每群小鱼的数量，`swimCadences` 控制大型生物的动作节奏。 |
+| 粉色海豚的队形和大小 | 调整 `dolphinPod` 中的 `side`、`along` 和 `size`，`dolphinPath` 控制整群路线。保持整群游出画面后才重复路线。 |
 | 自己发出的消息有多透明 | 在目标平台的样式文件中调 `--ocean-user-bubble-alpha`。macOS 使用 `assets/dream-skin.css`，Windows 使用 `assets/windows/dream-skin.css`。取 `0` 时气泡底色完全透明，可调到 `0.15` 保留一层淡底。保留消息文字、链接、按钮和现有描边。 |
 
 两个渲染文件由各主题共用。新增海景样式要限定在 `body[data-ocean-scene]` 下，动画沿用现有的主题 ID 判断和切走时的清理逻辑。使用本地预览和公开示例文案复核效果即可。

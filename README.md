@@ -2,6 +2,8 @@
 
 用于 Codex 桌面聊天窗口的动态浅海背景，基于 Codex Dream Skin 1.5.21。选中 **Ocean Shallows Live** 后，海面会流动，鱼群会自动出现，鼠标和键盘仍用于聊天。
 
+海景资源 **v1.0.0** 加入了结伴游动的粉色海豚，并增强了移动焦散、长涌浪和阳光反光。[下载 macOS / Windows 资源包](https://github.com/Asyou-GD/codex_ocean/releases/tag/v1.0.0)
+
 macOS 已完成本机运行验证。Windows 提供对应的样式资源和部署流程，安装时需在目标电脑验证实际显示。
 
 ![Codex 窗口中的动态海景](media/codex-ocean-demo.gif)
