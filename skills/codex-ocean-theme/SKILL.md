@@ -5,7 +5,7 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 
 # 定制和迁移 Codex 海景
 
-**先交付可在浏览器打开的 HTML，让用户改到满意，再把定稿应用到 Codex。** 第一次展示预览时就说明，Codex 里的海景只播放动画。水面和鱼群会自动运动，点水、拖鱼和海景快捷键都不可用。鼠标和键盘留给聊天、文字选择和「显示更多」。如果只是把已经定稿的版本搬到新电脑，直接走对应系统的换机流程。
+**先交付可在浏览器打开的 HTML，让用户改到满意，再把定稿应用到 Codex。** 第一次展示预览时说明所选版本的交互范围：v1.1.0 支持消息框外点海豚起跳、落水水花和点水涟漪，水面和鱼群也会自动运动。消息框、输入框、侧栏、标题栏、按钮、链接和浮层内的操作优先交给 Codex。拖动、选字、滚动与键盘保留原生行为；拖鱼和海景快捷键未实现。旧版 v1.0.1 只播放动画。如果只是把已经定稿的版本搬到新电脑，直接走对应系统的换机流程。
 
 ## 根据当前电脑选择流程
 
@@ -18,7 +18,7 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 ## 先预览，再定稿
 
 1. 找到 `codex_ocean` 工作副本，读取当前的 `themes/preset-ocean-shallows/theme.json`、`background.webp` 和 `assets/` 下的两份渲染文件。新建或复用工作区中的单文件 HTML 作为设计稿，把需要的样式、动画和图片内嵌，使文件可直接在本地浏览器打开。
-2. 在预览里用示例对话显示用户气泡、回复和输入框，让用户能同时看清水色、鱼群和文字。用自动播放演示最终背景；预览工具若带调色或调速控件，把它们留在浏览器。提供 HTML 本地路径，让用户既能直接编辑，也能逐轮描述想改的地方。
+2. 在预览里用示例对话显示用户气泡、回复和输入框，让用户能同时看清水色、鱼群和文字。演示自动播放和所选版本支持的点击效果，并让示例消息与输入框覆盖海豚以检查点击保护；预览工具若带调色或调速控件，把它们留在浏览器。提供 HTML 本地路径，让用户既能直接编辑，也能逐轮描述想改的地方。
 3. 每轮更新同一份 HTML，打开核对实际效果。用户确认“按这个版本应用到 Codex”后，再把最终差异移入下表对应的文件。编辑 HTML 本身只会改变预览。
 
 | 想改的效果 | 将定稿改到哪里 |
@@ -26,6 +26,7 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
 | 沙滩位置、海床和礁石 | 更新 `themes/preset-ocean-shallows/background.webp`。换图名时同步修改 `theme.json` 的 `image`。 |
 | 聊天文字、强调色和面板配色 | 编辑同目录 `theme.json` 的 `colors.text`、`colors.accent`、`colors.panel` 等字段。保留主题 ID `preset-ocean-shallows`，海景动画用它识别当前主题。 |
 | 水面节奏、鱼群数量或游姿 | 将预览采用的绘制参数移到 `assets/renderer-inject.js` 的海景代码。例如，`drawSchools` 中的 `perSchool` 控制每群小鱼的数量，`swimCadences` 控制大型生物的动作节奏。 |
+| 点击和起跳效果 | 在共享海景代码中调整 `leapDuration`、`drawDolphins` 的抬升幅度、`splashAt` 的水花和 `disturb` 的涟漪。保留消息与控件保护、拖动取消、被动监听和切走主题时的清理。 |
 | 粉色海豚的队形和大小 | 调整 `dolphinPod` 中的 `side`、`along` 和 `size`，`dolphinPath` 控制整群路线。保持整群游出画面后才重复路线。 |
 | 自己发出的消息有多透明 | 在目标平台的样式文件中调 `--ocean-user-bubble-alpha`。macOS 使用 `assets/dream-skin.css`，Windows 使用 `assets/windows/dream-skin.css`。取 `0` 时气泡底色完全透明，可调到 `0.15` 保留一层淡底。保留消息文字、链接、按钮和现有描边。 |
 
@@ -45,7 +46,7 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
    | `themes/preset-ocean-shallows/` | 软件菜单打开的主题文件夹内 |
 
 3. 从开始菜单打开 Codex Dream Skin 和托盘，在「已保存主题」里选择 **Ocean Shallows Live**。按启动器提示处理客户端重启。
-4. 在主题文件夹上一级的 `active-theme/theme.json` 中核对 ID 为 `preset-ocean-shallows`，运行已核对引擎内的 `scripts/verify-dream-skin.ps1`，并检查水面、鱼群、消息描边、文字选择、输入框及长消息展开。
+4. 在主题文件夹上一级的 `active-theme/theme.json` 中核对 ID 为 `preset-ocean-shallows`，运行已核对引擎内的 `scripts/verify-dream-skin.ps1`，并检查水面、鱼群、消息描边、文字选择、输入框及长消息展开。验证消息框外点海豚起跳、落水涟漪，消息框和输入框内点击不触发海景。
 5. 启动失败时记录 Store 版本、退出码及 `injector-error.log` 中的相关错误。根据实际失败判断兼容性。当前仓库已核对 Windows 资源与路径，Windows 实机结果由这次安装验证得出。
 
 回退时关闭 Codex 和托盘，恢复备份的引擎文件和预设，重新打开并选择原主题。日常更换背景直接使用托盘的「已保存主题」。
@@ -61,7 +62,7 @@ description: 在 macOS 或 Windows 上安装、预览、定制或迁移 Codex �
    | `assets/renderer-inject.js` | 当前引擎的 `assets/renderer-inject.js` |
    | `assets/dream-skin.css` | 同一引擎的 `assets/dream-skin.css` |
 
-3. 初次启用或更新了主题目录里的图片、配色后，在 Dream Skin 菜单的「已保存的主题」中选择 **Ocean Shallows Live**。海景已运行时，安装目录中的 JS 和 CSS 保存后会自动刷新；需要手动刷新时，可选「重新应用皮肤」。打开已有聊天，观察水面和鱼群是否运动，检查亮色海面上的文字是否可读，以及长消息能否展开和收起。切到另一 App，确认露出的 Codex 区域仍能看到海景。
+3. 初次启用或更新了主题目录里的图片、配色后，在 Dream Skin 菜单的「已保存的主题」中选择 **Ocean Shallows Live**。海景已运行时，安装目录中的 JS 和 CSS 保存后会自动刷新；需要手动刷新时，可选「重新应用皮肤」。打开已有聊天，观察水面和鱼群是否运动，检查亮色海面上的文字是否可读，以及长消息能否展开和收起。验证消息框外点海豚起跳与落水涟漪，消息框、输入框内点击及拖动选字不触发海景。切到另一 App，确认露出的 Codex 区域仍能看到海景。
 4. 日常更换背景，直接在「已保存的主题」里选择目标主题。要撤销文件层面的定制，先切走海景，再恢复第 2 步备份的资源和原主题目录，并重新选择原主题。若这台 Mac 原先没有海景目录，回退时可将新增目录移到主题库之外。
 
 ## 在另一台电脑继续使用本技能
