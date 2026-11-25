@@ -2,7 +2,7 @@
 
 用于 Codex 桌面聊天窗口的动态浅海背景，基于 Codex Dream Skin 1.5.21。选中 **Ocean Shallows Live** 后，海面会流动，鱼群会自动出现，聊天控件保留优先级，空白海面支持点击互动。
 
-海景资源 **v1.1.1** 重做海豚跃水：抬头破水、空中弓背转体、头先入水，并在出入水处产生不同的水花和涟漪。[下载 macOS / Windows 资源包](https://github.com/Asyou-GD/codex_ocean/releases/tag/v1.1.1)
+海景资源 **v1.1.2** 修复海豚入水时突然消失：水下轮廓随深度渐变，并平滑接回正常游姿。保留抬头破水、弓背转体及出入水水花。[下载 macOS / Windows 资源包](https://github.com/Asyou-GD/codex_ocean/releases/tag/v1.1.2)
 
 macOS 已有海景运行记录。新版交互已通过两套平台资源的浏览器测试，原生 Codex 窗口中的点击效果仍需实机确认。Windows 的安装与显示需在目标电脑验证。
 
