@@ -830,6 +830,13 @@
       '[class*="max-w-"][class*="rounded-2xl"][class*="text-start"]',
     ) ?? node;
   });
+  const resolvedDialogNodes = () => selectorNodes("overlay-dialog").map((node) => {
+    if (!node?.matches?.('[popover][class*="anchorHost-"]')) return node;
+    // Native hover cards keep a zero-sized popover host at the viewport origin.
+    // Painting/filtering that host changes the fixed child's containing block,
+    // so put the public dialog surface on the actual anchor-positioned card.
+    return node.querySelector?.(':scope > [data-anchor-positioning]') ?? node;
+  });
   const refreshParts = () => {
     metrics.partPasses += 1;
     const desired = new Map();
@@ -848,7 +855,7 @@
     addPart(desired, "composer-toolbar", [
       ...selectorNodes("composer-toolbar"), ...fallbackComposerToolbarNodes(composerNodes),
     ]);
-    addPart(desired, "dialog", selectorNodes("overlay-dialog"));
+    addPart(desired, "dialog", resolvedDialogNodes());
     const homeHero = selectorNodes("game-source")[0] ??
       selectorNodes("home-icon")[0]?.parentElement;
     addPart(desired, "home-hero", homeHero ? [homeHero] : []);
